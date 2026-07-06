@@ -1,0 +1,3 @@
+# Lista de confirmaciones de asistencia
+# Cada línea corresponde a una persona que confirmó su presencia.
+

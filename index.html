@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ara & Nico — Casamiento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Tokens ─────────────────────────────────────────────── */
+    :root {
+      --cream:   #FAF8F5;
+      --sage:    #4A5E52;
+      --gold:    #C9A96E;
+      --stone:   #8C8882;
+      --dark:    #2C3A32;
+      --white:   #FFFFFF;
+      --shadow:  rgba(44,58,50,0.10);
+
+      --ff-display: 'Cormorant Garamond', Georgia, serif;
+      --ff-body:    'Lato', system-ui, sans-serif;
+    }
+
+    /* ─── Reset ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: var(--ff-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    button, input, textarea {
+      font-family: var(--ff-body);
+      font-size: 1rem;
+      outline: none;
+    }
+
+    /* ─── Utilities ──────────────────────────────────────────── */
+    .section {
+      padding: 72px 24px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--ff-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--sage);
+      margin-bottom: 20px;
+    }
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin: 32px auto;
+    }
+    .body-text {
+      font-size: 1rem;
+      color: var(--stone);
+      line-height: 1.8;
+    }
+
+    /* ─── 1. HERO ────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/hero_nuevo.png');
+      /* ── Reemplazá hero-bg.svg con tu foto. Ejemplo: url('assets/foto.jpg') ── */
+      background-size: cover;
+      background-position: center;
+    }
+    #hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(44,58,50,0.25) 0%,
+        rgba(44,58,50,0.40) 60%,
+        rgba(44,58,50,0.55) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 40px 24px;
+    }
+    .hero-eyebrow {
+      font-family: var(--ff-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 28px;
+    }
+    .hero-names {
+      font-family: var(--ff-display);
+      font-size: clamp(3.5rem, 14vw, 7rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sage);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .hero-names .ampersand {
+      display: block;
+      font-size: 0.35em;
+      color: rgba(255,255,255,0.75);
+      font-style: normal;
+      letter-spacing: 0.1em;
+      margin: 4px 0;
+    }
+    .hero-tagline {
+      margin-top: 28px;
+      font-size: 0.88rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.75);
+      text-transform: uppercase;
+    }
+    .hero-scroll {
+      margin-top: 56px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+    .hero-scroll svg { animation: bounce 2s infinite; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+
+    /* ─── 2. SOBRE EL EVENTO ─────────────────────────────────── */
+    #sobre {
+      text-align: center;
+      border-bottom: 1px solid rgba(201,169,110,0.2);
+    }
+    #sobre .body-text {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── 3. FECHA Y LUGAR ───────────────────────────────────── */
+    #evento {
+      text-align: center;
+    }
+    .event-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 24px;
+      margin: 36px 0 32px;
+    }
+    @media (max-width: 480px) {
+      .event-grid { grid-template-columns: 1fr; }
+    }
+    .event-block {}
+    .event-block-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .event-block-value {
+      font-family: var(--ff-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--sage);
+      line-height: 1.3;
+    }
+    .maps-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 12px 28px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .maps-link:hover {
+      background: var(--gold);
+      color: var(--white);
+    }
+
+    /* ─── 4. CONFIRMACIÓN ────────────────────────────────────── */
+    #confirmar {
+      background: var(--sage);
+      max-width: 100%;
+      padding: 72px 24px;
+    }
+    #confirmar .inner {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #confirmar .section-label { color: var(--gold); }
+    #confirmar .section-title { color: var(--white); }
+    #confirmar .body-text {
+      color: rgba(255,255,255,0.72);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    .rsvp-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+    .rsvp-form input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(201,169,110,0.40);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      transition: border-color 0.2s, background 0.2s;
+      border-radius: 0;
+    }
+    .rsvp-form input[type="text"]::placeholder { color: rgba(255,255,255,0.40); }
+    .rsvp-form input[type="text"]:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.15);
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      width: 100%;
+    }
+    .btn-primary:hover   { opacity: 0.88; }
+    .btn-primary:active  { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-feedback {
+      font-size: 0.85rem;
+      margin-top: 4px;
+      min-height: 20px;
+      color: var(--gold);
+    }
+    .form-feedback.error { color: #e07b7b; }
+
+    /* ─── 5. REGALOS ─────────────────────────────────────────── */
+    #regalos {
+      text-align: center;
+      border-top: 1px solid rgba(201,169,110,0.2);
+      border-bottom: 1px solid rgba(201,169,110,0.2);
+    }
+    .btn-outline {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 11px 28px;
+      border: 1px solid var(--sage);
+      color: var(--sage);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { background: var(--sage); color: var(--white); }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,58,50,0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--cream);
+      padding: 40px 36px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-box .section-label { display: block; margin-bottom: 12px; }
+    .modal-box h3 {
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--sage);
+      margin-bottom: 16px;
+    }
+    .modal-box p {
+      font-size: 0.95rem;
+      color: var(--stone);
+      line-height: 1.7;
+    }
+    /* ── Editá el texto dentro de .account-info ── */
+    .account-info {
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: rgba(74,94,82,0.07);
+      font-family: var(--ff-display);
+      font-size: 1.05rem;
+      color: var(--sage);
+      line-height: 1.6;
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--stone);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* ─── 6. MENSAJES ────────────────────────────────────────── */
+    #mensajes { text-align: center; }
+    .msg-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 480px;
+      margin: 32px auto 0;
+      text-align: left;
+    }
+    .msg-form label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .msg-form input[type="text"],
+    .msg-form textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(74,94,82,0.25);
+      background: var(--white);
+      color: var(--dark);
+      font-size: 0.95rem;
+      font-weight: 300;
+      resize: vertical;
+      transition: border-color 0.2s;
+      border-radius: 0;
+    }
+    .msg-form input[type="text"]:focus,
+    .msg-form textarea:focus { border-color: var(--sage); }
+    .msg-form textarea { min-height: 130px; }
+    .msg-form .btn-primary { background: var(--sage); }
+    .msg-form .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── 7. HISTORIA ────────────────────────────────────────── */
+    #historia {
+      text-align: center;
+      padding-bottom: 88px;
+    }
+    #historia .body-text {
+      max-width: 480px;
+      margin: 0 auto 28px;
+      font-style: italic;
+      font-family: var(--ff-display);
+      font-size: 1.15rem;
+      color: var(--stone);
+      line-height: 1.75;
+    }
+    .btn-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: none;
+    }
+    .btn-text svg { transition: transform 0.2s; }
+    .btn-text:hover svg { transform: translateX(4px); }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    footer span { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 1. HERO                                                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div id="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">somos</p>
+    <h1 class="hero-names">
+      Ara
+      <span class="ampersand">y</span>
+      Nico
+    </h1>
+    <!-- ── Editá esta línea con el subtítulo que quieras ── -->
+    <p class="hero-tagline">y te invitamos a la ceremonia<br>de nuestro matrimonio</p>
+    <a href="#sobre" class="hero-scroll" aria-label="Desplazar hacia abajo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M10 4v12M4 11l6 6 6-6"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 2. SOBRE EL EVENTO                                         -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="sobre" class="section">
+  <span class="section-label">Nuestra celebración</span>
+  <!-- ── Editá este título y el párrafo de abajo ── -->
+  <h2 class="section-title">Una pequeña ceremonia<br>para compartir con vos<br></h2>
+  <div class="divider"></div>
+  <p class="body-text">
+    Hace unos meses nos prometimos casarnos, ¡y está llegando el día! No planificamos una fiesta, pero queremos invitarlos a una breve ceremonia religiosa en la parroquia a cuya comunidad pertenece Ara. Nos encantaría verlos allí si tienen esa tarde libre.
+  </p>
+  <p class="body-text">
+    Hemos decidido que no convocaremos a otro evento más allá de esta ceremonia. De hecho, al bajar del altar partiremos directamente a nuestra luna de miel, donde exploraremos más sobre esta aventura de formar una alianza: nos acompañaremos a ver un eclipse solar, una de las pasiones de Ara, y a viajar en trenes a vapor, uno de los sueños de Nico.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 3. FECHA Y LUGAR                                           -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="evento" class="section">
+  <span class="section-label">El día</span>
+  <h2 class="section-title">¿Cuándo? ¿Dónde?<br>¿Cómo?</h2>
+  <div class="divider"></div>
+
+  <div class="event-grid">
+    <div class="event-block">
+      <p class="event-block-label">Fecha</p>
+      <!-- ── Editá la fecha ── -->
+      <p class="event-block-value">Sábado 25 de julio de 2026</p>
+    </div>
+    <div class="event-block">
+      <p class="event-block-label">Hora</p>
+      <!-- ── Editá la hora ── -->
+      <p class="event-block-value">15:00<br>Duración: unos 45 minutos</p>
+    </div>
+    <div class="event-block">
+      <p class="event-block-label">Lugar</p>
+      <!-- ── Editá el nombre del lugar ── -->
+      <p class="event-block-value">Parroquia<br>Nuestra Señora del Rosario</p>
+    </div>
+    <div class="event-block">
+      <p class="event-block-label">Dirección</p>
+      <!-- ── Editá la dirección ── -->
+      <p class="event-block-value">Gral. Gelly y Obes 1186<br>Villa Sarmiento, Buenos Aires</p>
+    </div>
+    <div class="event-block">
+      <p class="event-block-label">Vestimenta</p>
+      <!-- ── Editá la dirección ── -->
+      <p class="event-block-value">Vení como quieras (teniendo<br>en cuenta que es una iglesia)</p>
+    </div>
+        <div class="event-block">
+      <p class="event-block-label">Vestimenta de los novios</p>
+      <!-- ── Editá la dirección ── -->
+      <p class="event-block-value">Ara: vestido blanco misterioso<br>Nico: traje negro, chaleco y moño</p>
+    </div>
+  </div>
+
+
+  <a
+    href="https://maps.app.goo.gl/AHS3vnXB3tPhqxJz6"
+    target="_blank"
+    rel="noopener"
+    class="maps-link"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+      <circle cx="12" cy="9" r="2.5"/>
+    </svg>
+    Ver en Google Maps
+  </a>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 4. CONFIRMACIÓN                                            -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="confirmar">
+  <div class="inner">
+    <span class="section-label">Si te anotás acá,<br>nos ayudás a prepararnos</span>
+    <h2 class="section-title">¿Venís?</h2>
+
+    <p class="body-text">
+      ¡Podés venir con quien quieras! No es necesario que confirmes asistencia, pero si lo hacés, nos estás ayudando a preparar la parroquia. Solo escribí tu nombre y apellido.
+    </p>
+    <p class="body-text">
+      Si querés confirmar la presencia de más de una persona, podés escribir todos los nombres juntos. Ejemplo: "Mirta Pérez, Norma Rutilo y Roberto Sanidina".
+    </p>
+
+    <div class="rsvp-form" id="rsvpForm">
+      <input
+        type="text"
+        id="rsvpName"
+        placeholder="Nombre(s) y apellido(s)"
+        maxlength="80"
+        autocomplete="name"
+      />
+      <button class="btn-primary" id="rsvpBtn" onclick="submitRSVP()">
+        Confirmar asistencia
+      </button>
+      <p class="form-feedback" id="rsvpFeedback"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 5. REGALOS                                                 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="regalos" class="section">
+  <span class="section-label">De verdad no hace falta</span>
+  <h2 class="section-title">¡No hace falta regalo!</h2>
+  <div class="divider"></div>
+
+  <p class="body-text">
+    No hace falta un regalo. Estamos más que contentos con que nos acompañen quienes quieran y puedan. De verdad no es necesario un regalo. Estamos más que felices con todo lo que está sucediendo y con todos los planes que tenemos pensados para los tiempos por venir.
+  </p>
+  <p class="body-text">
+    Entendemos que hay quien pueda tener unas ganas irrefrenables de hacernos algún regalo. 
+    Si esa persona sos vos, podés hacer click <a href="#" onclick="openModal(); return false;">acá</a>. ¡Pero de verdad que no hace falta!
+  </p>
+<!--  <button class="btn-outline" onclick="openModal()">Ver cuenta</button> -->
+</section>
+
+<!-- Modal datos bancarios -->
+<div class="modal-overlay" id="modalRegalos" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">&times;</button>
+    <span class="section-label"></span>
+    <h3>Invitanos un tecito<br>para el viaje</h3>
+    <p></p>
+
+    <div class="account-info">
+      Alias: LOREM.IPSUM.BANCO<br>
+      CBU: 0000000000000000000000<br>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 6. MENSAJES PARA LOS NOVIOS                                -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="mensajes" class="section">
+  <span class="section-label">piiiip</span>
+  <h2 class="section-title">Dejanos tu mensaje<br>después de la señal</h2>
+  <div class="divider"></div>
+  <p class="body-text">
+    Cada mensaje que nos mandes lo vamos a guardar con mucho cariño. También podés dejarnos cualquier consulta sobre la ceremonia, quejas, sugerencias, etcétera.
+  </p>
+
+  <div class="msg-form">
+    <div>
+      <label for="msgName">Tu nombre</label>
+      <input
+        type="text"
+        id="msgName"
+        placeholder="Nombre"
+        maxlength="60"
+        autocomplete="name"
+      />
+    </div>
+    <div>
+      <label for="msgText">Tu mensaje</label>
+      <textarea
+        id="msgText"
+        placeholder="Escribí tu mensaje acá…"
+        maxlength="2000"
+      ></textarea>
+    </div>
+    <button class="btn-primary" id="msgBtn" onclick="submitMessage()" style="background:var(--sage);">
+      Enviar mensaje
+    </button>
+    <p class="form-feedback" id="msgFeedback"></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- 7. NUESTRA HISTORIA                                        -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="historia" class="section">
+  <span class="section-label"></span>
+  <div class="divider"></div>
+
+  <p class="body-text">
+    Un viaje de mochileros de 16 personas al norte argentino nos encontró por primera vez en 2014. Nuestra historia de amor empezó durante un segundo viaje de mochileros, esta vez al sur, un 25 de enero de 2015, cuando tuvimos nuestra primera cita: un viaje en La Trochita en Esquel. Eso dio lugar a una segunda cita, yendo a tomar un té con masitas a Trevelin. Y ahí perdimos la cuenta de cuántas otras citas más fueron dando lugar a una bonita historia juntos. 
+  </p>
+  <!--
+    ── El href de abajo puede apuntar a una página aparte, un PDF, o una sección oculta ──
+    Por ahora apunta a "#" como placeholder.
+ 
+  <a href="#" class="btn-text">
+    Leer más
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </svg>
+  </a> -->
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────────── -->
+<footer>
+  Codeado ¿con amor? por Claude Sonnet 4.6.<br>Escrito por <span>Ara &amp; Nico</span> &nbsp;·&nbsp; 2026
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<script>
+  /* ══════════════════════════════════════════════════════════════
+   * CONFIGURACIÓN — editá estos tres valores antes de publicar
+   * ══════════════════════════════════════════════════════════════
+   *
+   * GITHUB_OWNER : tu usuario de GitHub (ej. "araceli-barrera")
+   * GITHUB_REPO  : el repo PÚBLICO donde está la web (ej. "casamiento")
+   * GITHUB_TOKEN : un Fine-grained PAT con acceso a ambos repos
+   *
+   * Cómo crear el token — ver README para instrucciones detalladas.
+   * ══════════════════════════════════════════════════════════════ */
+  const GITHUB_OWNER = 'nicopeluffo';      // ← editá
+  const GITHUB_REPO  = 'casorio';  // ← editá (repo público, donde está la web)
+  const GITHUB_TOKEN = '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';      // ← editá
+
+  /* ══════════════════════════════════════════════════════════════
+   * No hace falta editar nada de acá para abajo
+   * ══════════════════════════════════════════════════════════════ */
+
+  /* Helpers */
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function timestamp() {
+    const d = new Date();
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  /* Dispara un repository_dispatch en el repo público.
+     El workflow correspondiente corre ahí y escribe en casorio-datos. */
+  async function dispatch(eventType, payload) {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ event_type: eventType, client_payload: payload }),
+      }
+    );
+    if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
+  }
+
+  /* ── RSVP ────────────────────────────────────────────────────── */
+  async function submitRSVP() {
+    const nameEl = document.getElementById('rsvpName');
+    const btn    = document.getElementById('rsvpBtn');
+    const fb     = document.getElementById('rsvpFeedback');
+    const name   = nameEl.value.trim();
+
+    if (!name) {
+      fb.textContent = 'Por favor escribí tu nombre.';
+      fb.className = 'form-feedback error';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    fb.textContent = '';
+    fb.className = 'form-feedback';
+
+    try {
+      await dispatch('rsvp', { name, timestamp: timestamp() });
+      fb.textContent = `¡Gracias, ${name}! Tu confirmación fue registrada. 🎉`;
+      fb.className = 'form-feedback';
+      nameEl.value = '';
+    } catch (e) {
+      fb.textContent = 'Hubo un error. Por favor intentá de nuevo.';
+      fb.className = 'form-feedback error';
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Confirmar asistencia';
+    }
+  }
+
+  /* ── MENSAJES ────────────────────────────────────────────────── */
+  async function submitMessage() {
+    const nameEl = document.getElementById('msgName');
+    const textEl = document.getElementById('msgText');
+    const btn    = document.getElementById('msgBtn');
+    const fb     = document.getElementById('msgFeedback');
+    const name   = nameEl.value.trim();
+    const msg    = textEl.value.trim();
+
+    if (!name) {
+      fb.textContent = 'Por favor escribí tu nombre.';
+      fb.className = 'form-feedback error';
+      return;
+    }
+    if (!msg) {
+      fb.textContent = 'Por favor escribí un mensaje.';
+      fb.className = 'form-feedback error';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    fb.textContent = '';
+    fb.className = 'form-feedback';
+
+    try {
+      await dispatch('message', { name, message: msg, timestamp: timestamp() });
+      fb.textContent = `¡Gracias, ${name}! Tu mensaje nos va a llegar con mucho cariño. 💌`;
+      fb.className = 'form-feedback';
+      nameEl.value = '';
+      textEl.value = '';
+    } catch (e) {
+      fb.textContent = 'Hubo un error al enviar. Por favor intentá de nuevo.';
+      fb.className = 'form-feedback error';
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar mensaje';
+    }
+  }
+
+  /* ── MODAL REGALOS ───────────────────────────────────────────── */
+  function openModal() {
+    document.getElementById('modalRegalos').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modalRegalos') || e.currentTarget.tagName === 'BUTTON') {
+      document.getElementById('modalRegalos').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal({ target: document.getElementById('modalRegalos') });
+  });
+</script>
+
+</body>
+</html>

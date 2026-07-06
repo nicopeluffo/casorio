@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A5E52;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2C3A32;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <!-- Decorative botanical elements -->
+  <g opacity="0.15" stroke="#C9A96E" stroke-width="1.5" fill="none">
+    <!-- Left branch -->
+    <path d="M 50,400 Q 150,300 200,200"/>
+    <path d="M 200,200 Q 180,150 140,120"/>
+    <path d="M 200,200 Q 230,160 250,130"/>
+    <path d="M 150,300 Q 120,270 90,250"/>
+    <path d="M 150,300 Q 170,260 190,240"/>
+    <path d="M 100,360 Q 70,330 50,310"/>
+    <!-- Right branch -->
+    <path d="M 1150,400 Q 1050,300 1000,200"/>
+    <path d="M 1000,200 Q 1020,150 1060,120"/>
+    <path d="M 1000,200 Q 970,160 950,130"/>
+    <path d="M 1050,300 Q 1080,270 1110,250"/>
+    <path d="M 1050,300 Q 1030,260 1010,240"/>
+    <path d="M 1100,360 Q 1130,330 1150,310"/>
+    <!-- Small leaves -->
+    <ellipse cx="140" cy="120" rx="18" ry="10" transform="rotate(-30,140,120)"/>
+    <ellipse cx="250" cy="130" rx="18" ry="10" transform="rotate(20,250,130)"/>
+    <ellipse cx="90" cy="250" rx="15" ry="8" transform="rotate(-45,90,250)"/>
+    <ellipse cx="190" cy="240" rx="15" ry="8" transform="rotate(15,190,240)"/>
+    <ellipse cx="1060" cy="120" rx="18" ry="10" transform="rotate(30,1060,120)"/>
+    <ellipse cx="950" cy="130" rx="18" ry="10" transform="rotate(-20,950,130)"/>
+    <ellipse cx="1110" cy="250" rx="15" ry="8" transform="rotate(45,1110,250)"/>
+    <ellipse cx="1010" cy="240" rx="15" ry="8" transform="rotate(-15,1010,240)"/>
+  </g>
+  <!-- Center text hint -->
+  <text x="600" y="390" font-family="Georgia,serif" font-size="14" fill="#C9A96E" opacity="0.4" text-anchor="middle">
+    Reemplazá este archivo con tu foto preferida
+  </text>
+  <text x="600" y="415" font-family="Georgia,serif" font-size="14" fill="#C9A96E" opacity="0.4" text-anchor="middle">
+    (assets/hero-bg.svg o .jpg/.webp)
+  </text>
+</svg>
