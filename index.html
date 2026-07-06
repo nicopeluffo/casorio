@@ -680,46 +680,39 @@
 <!-- ══════════════════════════════════════════════════════════ -->
 <script>
   /* ══════════════════════════════════════════════════════════════
-   * CONFIGURACIÓN — editá estos tres valores antes de publicar
-   * ══════════════════════════════════════════════════════════════
-   *
-   * GITHUB_OWNER : tu usuario de GitHub (ej. "araceli-barrera")
-   * GITHUB_REPO  : el repo PÚBLICO donde está la web (ej. "casamiento")
-   * GITHUB_TOKEN : un Fine-grained PAT con acceso a ambos repos
-   *
-   * Cómo crear el token — ver README para instrucciones detalladas.
+   * URLs de Google Apps Script
+   * No son secretos — no dan acceso a nada, solo reciben datos.
    * ══════════════════════════════════════════════════════════════ */
-  const GITHUB_OWNER = 'nicopeluffo';      // ← editá
-  const GITHUB_REPO  = 'casorio';  // ← editá (repo público, donde está la web)
-  const GITHUB_TOKEN = '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';      // ← editá
+  const URL_RSVP     = 'https://script.google.com/macros/s/AKfycbwJEgNngyW3aAypbcNymGWEm3tTVZRgVubsV6FB6m-9E4TowscEBDCeIPyVOvrVLUMs/exec';
+  const URL_MENSAJES = 'https://script.google.com/macros/s/AKfycbwkYMfjbSYa5Li_55Go7r0tN3zkgizMtRkWZSWVX81Cpyv9D2PJmZTplKjp_lrvv6wG-A/exec';
 
-  /* ══════════════════════════════════════════════════════════════
-   * No hace falta editar nada de acá para abajo
-   * ══════════════════════════════════════════════════════════════ */
-
-  /* Helpers */
+  /* ── Helpers ─────────────────────────────────────────────────── */
   function pad(n) { return String(n).padStart(2, '0'); }
   function timestamp() {
     const d = new Date();
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
-  /* Dispara un repository_dispatch en el repo público.
-     El workflow correspondiente corre ahí y escribe en casorio-datos. */
-  async function dispatch(eventType, payload) {
-    const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ event_type: eventType, client_payload: payload }),
-      }
-    );
-    if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
+  /* Rate limiting del lado del cliente: un envío cada 30 segundos por formulario.
+     Desalienta envíos múltiples accidentales o maliciosos. */
+  const lastSubmit = {};
+  function checkRateLimit(key) {
+    const now = Date.now();
+    if (lastSubmit[key] && now - lastSubmit[key] < 30000) return false;
+    lastSubmit[key] = now;
+    return true;
+  }
+
+  /* Envía a Google Apps Script con mode: 'no-cors'.
+     La respuesta es opaca (no legible), pero el script igual escribe en la Sheet
+     si no hubo error de red. */
+  async function postToSheet(url, payload) {
+    await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
   }
 
   /* ── RSVP ────────────────────────────────────────────────────── */
@@ -734,6 +727,16 @@
       fb.className = 'form-feedback error';
       return;
     }
+    if (name.length > 200) {
+      fb.textContent = 'El nombre es demasiado largo.';
+      fb.className = 'form-feedback error';
+      return;
+    }
+    if (!checkRateLimit('rsvp')) {
+      fb.textContent = 'Esperá unos segundos antes de volver a enviar.';
+      fb.className = 'form-feedback error';
+      return;
+    }
 
     btn.disabled = true;
     btn.textContent = 'Enviando…';
@@ -741,12 +744,12 @@
     fb.className = 'form-feedback';
 
     try {
-      await dispatch('rsvp', { name, timestamp: timestamp() });
-      fb.textContent = `¡Gracias, ${name}! Tu confirmación fue registrada. 🎉`;
+      await postToSheet(URL_RSVP, { name, timestamp: timestamp() });
+      fb.textContent = `¡Gracias! Tu confirmación fue registrada. 🎉`;
       fb.className = 'form-feedback';
       nameEl.value = '';
     } catch (e) {
-      fb.textContent = 'Hubo un error. Por favor intentá de nuevo.';
+      fb.textContent = 'Hubo un error de red. Por favor intentá de nuevo.';
       fb.className = 'form-feedback error';
       console.error(e);
     } finally {
@@ -774,6 +777,16 @@
       fb.className = 'form-feedback error';
       return;
     }
+    if (msg.length > 2000) {
+      fb.textContent = 'El mensaje es demasiado largo (máximo 2000 caracteres).';
+      fb.className = 'form-feedback error';
+      return;
+    }
+    if (!checkRateLimit('mensaje')) {
+      fb.textContent = 'Esperá unos segundos antes de volver a enviar.';
+      fb.className = 'form-feedback error';
+      return;
+    }
 
     btn.disabled = true;
     btn.textContent = 'Enviando…';
@@ -781,13 +794,13 @@
     fb.className = 'form-feedback';
 
     try {
-      await dispatch('message', { name, message: msg, timestamp: timestamp() });
-      fb.textContent = `¡Gracias, ${name}! Tu mensaje nos va a llegar con mucho cariño. 💌`;
+      await postToSheet(URL_MENSAJES, { name, message: msg, timestamp: timestamp() });
+      fb.textContent = `¡Gracias! Tu mensaje nos va a llegar con mucho cariño. 💌`;
       fb.className = 'form-feedback';
       nameEl.value = '';
       textEl.value = '';
     } catch (e) {
-      fb.textContent = 'Hubo un error al enviar. Por favor intentá de nuevo.';
+      fb.textContent = 'Hubo un error de red. Por favor intentá de nuevo.';
       fb.className = 'form-feedback error';
       console.error(e);
     } finally {
